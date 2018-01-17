@@ -89,8 +89,12 @@ module Geoblacklight
       gsub_file('app/assets/javascripts/application.js', %r{\/\/= require turbolinks}, '')
     end
 
-    def generate_blacklight_models
+    def generate_geoblacklight_services
       generate 'geoblacklight:services'
+    end
+
+    def generate_geoblacklight_jobs
+      generate 'geoblacklight:jobs'
     end
 
     def bundle_install
