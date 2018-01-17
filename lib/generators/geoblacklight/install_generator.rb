@@ -43,6 +43,10 @@ module Geoblacklight
       copy_file 'catalog_controller.rb', 'app/controllers/catalog_controller.rb'
     end
 
+    def create_app_services
+      directory 'app/services', 'app/services'
+    end
+
     def rails_config
       copy_file 'settings.yml', 'config/settings.yml'
     end
