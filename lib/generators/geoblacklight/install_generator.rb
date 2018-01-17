@@ -90,7 +90,7 @@ module Geoblacklight
     end
 
     def generate_blacklight_models
-      generate 'geo_blacklight:services'
+      generate 'geoblacklight:services'
     end
 
     def bundle_install

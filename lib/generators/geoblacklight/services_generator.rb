@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 require 'rails/generators'
 
-module GeoBlacklight
+module Geoblacklight
   class ServicesGenerator < Rails::Generators::Base
-    include Rails::Generators::Migration
-
     source_root File.expand_path('../templates', __FILE__)
 
     desc <<-EOS
