@@ -11,7 +11,7 @@ module Geoblacklight
     EOS
 
     def create_store_image_jobs
-      copy_file "jobs/store_image_job.rb", "jobs/store_image_job.rb"
+      copy_file "jobs/store_image_job.rb", "app/jobs/store_image_job.rb"
     end
   end
 end
