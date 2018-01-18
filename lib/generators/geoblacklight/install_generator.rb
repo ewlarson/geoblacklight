@@ -51,6 +51,10 @@ module Geoblacklight
       directory '../../../../solr', 'solr'
     end
 
+    def devise_initializer
+      copy_file 'devise.rb', 'config/initializers/devise.rb'
+    end
+
     def include_geoblacklight_solrdocument
       inject_into_file 'app/models/solr_document.rb', after: 'include Blacklight::Solr::Document' do
         "\n include Geoblacklight::SolrDocument"
