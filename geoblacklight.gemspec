@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.required_rubygems_version = '>= 2.5.2'
 
-  spec.add_dependency 'rails', '~> 5.0'
+  spec.add_dependency 'rails', '5.2.0.beta2'
   spec.add_dependency 'blacklight', '~> 6.11'
   spec.add_dependency 'leaflet-rails', '~> 0.7.3'
   spec.add_dependency 'carrierwave'
