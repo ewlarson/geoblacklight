@@ -31,9 +31,6 @@ module Geoblacklight
     end
 
     def assets
-      copy_file 'geoblacklight.scss', 'app/assets/stylesheets/geoblacklight.scss'
-      copy_file 'geoblacklight.js', 'app/assets/javascripts/geoblacklight.js'
-
       append_to_file 'config/initializers/assets.rb',
                      "\nRails.application.config.assets.precompile += %w( favicon.ico )\n"
     end
