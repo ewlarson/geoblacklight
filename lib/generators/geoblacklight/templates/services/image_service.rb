@@ -3,10 +3,31 @@ class ImageService
     @document = document
   end
 
-  # Caches the document's thumbnail image using ActiveSupport::Cache::Store.
+  # Stores the document's image in SolrDocumentSidecar
+  # using Carrierwave
   # @return [Boolean]
-  def cache
-    Rails.cache.write("images/#{@document.id}", image_data)
+  #
+  # @TODO: EWL
+  def store
+    puts "\nDOC: #{@document.id}"
+    puts "IMG: #{image_url}"
+
+    begin
+      sidecar = @document.sidecar
+      file = Tempfile.new([@document.id, ".png"])
+      file.binmode
+      file.write(image_data[:data])
+      file.close
+
+      sidecar.image = file
+      sidecar.save!
+
+      file.unlink
+      puts "SUCCESS\n\n"
+    rescue Exception => e
+      puts "EXCEPTION: #{e.inspect}"
+      puts "FAILURE\n\n"
+    end
   end
 
   # Returns hash containing placeholder thumbnail for the document.
@@ -55,11 +76,11 @@ class ImageService
   # Generates hash containing thumbnail mime_type and image.
   def image_data
     return placeholder_data unless image_url
-    { type: "image/png", data: image_image }
+    { type: "image/png", data: remote_image }
   end
 
   # Gets thumbnail image from URL. On error, returns document's placeholder image.
-  def image_image
+  def remote_image
     auth = geoserver_credentials
     conn = Faraday.new(url: image_url)
     conn.options.timeout = timeout
@@ -107,19 +128,20 @@ class ImageService
     return unless @document.available?
     protocol = @document.viewer_protocol
     return if protocol == 'map' || protocol.nil?
-    "ThumbnailService::#{protocol.camelcase}".constantize.image_url(@document, image_size)
+    "ImageService::#{protocol.camelcase}".constantize.image_url(@document, image_size)
   rescue NameError
     return nil
   end
 
   # Retreives a url to a static thumbnail from the document's dct_references field, if it exists.
   def image_reference
+    return nil if @document[@document.references.reference_field].nil?
     JSON.parse(@document[@document.references.reference_field])['http://schema.org/thumbnailUrl']
   end
 
   # Default thumbnail size.
   def image_size
-    256
+    2000
   end
 
   # Faraday timeout value.

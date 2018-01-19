@@ -61,6 +61,20 @@ module Geoblacklight
       end
     end
 
+    def include_wms_rewrite_solrdocument
+      inject_into_file 'app/models/solr_document.rb', after: 'include Geoblacklight::SolrDocument' do
+        "\n include include WmsRewriteConcern"
+      end
+    end
+
+    def include_sidecar_solrdocument
+      inject_into_file 'app/models/solr_document.rb', after: 'use_extension(Blacklight::Document::DublinCore)' do
+        "\ndef sidecar\n
+            SolrDocumentSidecar.find_or_create_by!(document_id: id, document_type: self.class.to_s)\n
+          end\n\n"
+      end
+    end
+
     def add_unique_key
       inject_into_file 'app/models/solr_document.rb', after: "# self.unique_key = 'id'" do
         "\n  self.unique_key = 'layer_slug_s'"
@@ -93,12 +107,26 @@ module Geoblacklight
       gsub_file('app/assets/javascripts/application.js', %r{\/\/= require turbolinks}, '')
     end
 
+    def generate_geoblacklight_assets
+      generate 'geoblacklight:assets'
+    end
+
     def generate_geoblacklight_services
       generate 'geoblacklight:services'
     end
 
     def generate_geoblacklight_jobs
       generate 'geoblacklight:jobs'
+
+      job_config = <<-"JOBS"
+        config.active_job.queue_adapter = :inline
+      JOBS
+
+      inject_into_file 'config/environments/development.rb', job_config, before: /^end/
+    end
+
+    def generate_geoblacklight_uploaders
+      generate 'geoblacklight:uploaders'
     end
 
     def bundle_install

@@ -3,6 +3,6 @@ class StoreImageJob < ApplicationJob
 
   def perform(document_hash)
     doc = SolrDocument.new(document_hash)
-    ImageService.new(doc).cache
+    ImageService.new(doc).store
   end
 end
