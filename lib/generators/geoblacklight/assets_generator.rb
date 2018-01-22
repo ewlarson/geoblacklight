@@ -12,6 +12,22 @@ module Geoblacklight
        3. Copies asset stylesheet files to host app/assets/stylesheets
     EOS
 
+    # Necessary for bootstrap-sass 3.2
+    def inject_sprockets
+      blacklight_css = Dir['app/assets/stylesheets/blacklight.scss'].first
+      if blacklight_css
+        insert_into_file blacklight_css, before: "@import 'bootstrap';" do
+          "@import 'bootstrap-sprockets';\n"
+        end
+      else
+        say_status 'warning', 'Can not find blacklight.scss, did not insert our require', :red
+      end
+    end
+
+    def disable_turbolinks
+      gsub_file('app/assets/javascripts/application.js', %r{\/\/= require turbolinks}, '')
+    end
+
     def create_javascripts_assets
       copy_file "assets/javascripts/geoblacklight.js", "assets/javascripts/geoblacklight.js"
     end
