@@ -16,7 +16,7 @@ module Geoblacklight
 
     # Setup the database migrations
     def copy_migrations
-      rake "geoblacklight:install:migrations"
+      rake "geoblacklight_engine:install:migrations"
     end
 
     def include_geoblacklight_solrdocument
