@@ -19,7 +19,7 @@ module Geoblacklight
 
     def include_wms_rewrite_solrdocument
       inject_into_file 'app/models/solr_document.rb', after: 'include Geoblacklight::SolrDocument' do
-        "\n include include WmsRewriteConcern"
+        "\n include WmsRewriteConcern"
       end
     end
 
