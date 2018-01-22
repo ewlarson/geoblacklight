@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 require 'rails/generators'
+require 'rails/generators/migration'
 
 module Geoblacklight
   class ModelsGenerator < Rails::Generators::Base
+    include Rails::Generators::Migration
+
     source_root File.expand_path('../templates', __FILE__)
 
     desc <<-EOS
@@ -10,6 +13,11 @@ module Geoblacklight
        1. Injects Geoblacklight into SolrDocument
        2. Adds SolrDocumentSidecar ActiveRecord model
     EOS
+
+    # Setup the database migrations
+    def copy_migrations
+      rake "geoblaclight:install:migrations"
+    end
 
     def include_geoblacklight_solrdocument
       inject_into_file 'app/models/solr_document.rb', after: 'include Blacklight::Solr::Document' do

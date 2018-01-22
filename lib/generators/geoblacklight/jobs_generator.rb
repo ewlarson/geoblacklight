@@ -8,6 +8,7 @@ module Geoblacklight
     desc <<-EOS
       This generator makes the following changes to your application:
        1. Copies jobs files to host app/jobs
+       2. Configures a default development environment queue adapter
     EOS
 
     def create_store_image_jobs
