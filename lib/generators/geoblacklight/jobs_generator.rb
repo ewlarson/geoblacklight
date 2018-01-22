@@ -13,5 +13,13 @@ module Geoblacklight
     def create_store_image_jobs
       copy_file "jobs/store_image_job.rb", "app/jobs/store_image_job.rb"
     end
+
+    def config_development_jobs_queue_adapter
+      job_config = <<-"JOBS"
+        config.active_job.queue_adapter = :inline
+      JOBS
+
+      inject_into_file 'config/environments/development.rb', job_config, before: /^end/
+    end
   end
 end

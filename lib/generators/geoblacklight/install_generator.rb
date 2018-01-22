@@ -52,32 +52,6 @@ module Geoblacklight
       copy_file 'devise.rb', 'config/initializers/devise.rb'
     end
 
-    def include_geoblacklight_solrdocument
-      inject_into_file 'app/models/solr_document.rb', after: 'include Blacklight::Solr::Document' do
-        "\n include Geoblacklight::SolrDocument"
-      end
-    end
-
-    def include_wms_rewrite_solrdocument
-      inject_into_file 'app/models/solr_document.rb', after: 'include Geoblacklight::SolrDocument' do
-        "\n include include WmsRewriteConcern"
-      end
-    end
-
-    def include_sidecar_solrdocument
-      inject_into_file 'app/models/solr_document.rb', after: 'use_extension(Blacklight::Document::DublinCore)' do
-        "\ndef sidecar\n
-            SolrDocumentSidecar.find_or_create_by!(document_id: id, document_type: self.class.to_s)\n
-          end\n\n"
-      end
-    end
-
-    def add_unique_key
-      inject_into_file 'app/models/solr_document.rb', after: "# self.unique_key = 'id'" do
-        "\n  self.unique_key = 'layer_slug_s'"
-      end
-    end
-
     def add_spatial_search_behavior
       inject_into_file 'app/models/search_builder.rb', after: 'include Blacklight::Solr::SearchBuilderBehavior' do
         "\n  include Geoblacklight::SpatialSearchBehavior"
@@ -114,12 +88,10 @@ module Geoblacklight
 
     def generate_geoblacklight_jobs
       generate 'geoblacklight:jobs'
+    end
 
-      job_config = <<-"JOBS"
-        config.active_job.queue_adapter = :inline
-      JOBS
-
-      inject_into_file 'config/environments/development.rb', job_config, before: /^end/
+    def generate_geoblacklight_models
+      generate 'geoblacklight:models'
     end
 
     def generate_geoblacklight_uploaders
