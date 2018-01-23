@@ -82,6 +82,10 @@ module Geoblacklight
       generate 'geoblacklight:uploaders'
     end
 
+    def generate_geoblacklight_example_docs
+      generate 'geoblacklight:example_docs'
+    end
+
     def bundle_install
       Bundler.with_clean_env do
         run 'bundle install'
