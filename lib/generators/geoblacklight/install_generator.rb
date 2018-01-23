@@ -52,6 +52,12 @@ module Geoblacklight
       copy_file 'devise.rb', 'config/initializers/devise.rb'
     end
 
+    def add_carrierwave_require
+      inject_into_file 'config/application.rb', after: "require 'rails/all'" do
+        "\n  require 'carrierwave'"
+      end
+    end
+
     def add_spatial_search_behavior
       inject_into_file 'app/models/search_builder.rb', after: 'include Blacklight::Solr::SearchBuilderBehavior' do
         "\n  include Geoblacklight::SpatialSearchBehavior"
