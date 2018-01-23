@@ -29,7 +29,7 @@ module Geoblacklight
     end
 
     def create_javascripts_assets
-      copy_file "assets/javascripts/geoblacklight.js", "assets/javascripts/geoblacklight.js"
+      copy_file "assets/javascripts/geoblacklight.js", "app/assets/javascripts/geoblacklight.js"
     end
 
     def create_stylesheets_assets
