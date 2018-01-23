@@ -40,7 +40,7 @@ namespace :geoblacklight do
     desc "Ingests a directory of geoblacklight.json files"
     task :ingest, [:directory] => :environment do |_t, args|
       args.with_defaults(directory: 'data')
-      Dir.glob(File.join(args[:directory], '**', 'geoblacklight.json')).each do |fn|
+      Dir.glob(File.join(args[:directory], '**', '*.json')).each do |fn|
         puts "Ingesting #{fn}"
         begin
           Blacklight.default_index.connection.add(JSON.parse(File.read(fn)))
