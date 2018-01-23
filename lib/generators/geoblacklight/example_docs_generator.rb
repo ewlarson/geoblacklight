@@ -11,7 +11,7 @@ module Geoblacklight
     EOS
 
     def create_services
-      directory "solr_documents", "app/solr/geoblacklight/example_docs"
+      directory "solr_documents", "solr/geoblacklight/example_docs"
     end
   end
 end
