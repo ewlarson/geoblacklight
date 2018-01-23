@@ -3,7 +3,7 @@ require 'rails/generators'
 
 module Geoblacklight
   class ExampleDocsGenerator < Rails::Generators::Base
-    source_root File.expand_path('../../../spec/fixtures/', __FILE__)
+    source_root File.expand_path('../../../../spec/fixtures/', __FILE__)
 
     desc <<-EOS
       This generator makes the following changes to your application:
